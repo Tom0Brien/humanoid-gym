@@ -485,7 +485,8 @@ class LeggedRobot(BaseTask):
         for i in range(self.num_dofs):
             name = self.dof_names[i]
             # print(name)
-            self.default_dof_pos[i] = self.cfg.init_state.default_joint_angles[name]
+            if name in self.cfg.init_state.default_joint_angles:
+                self.default_dof_pos[i] = self.cfg.init_state.default_joint_angles[name]
             found = False
             for dof_name in self.cfg.control.stiffness.keys():
 
