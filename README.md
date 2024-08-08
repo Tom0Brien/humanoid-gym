@@ -189,3 +189,8 @@ The implementation of Humanoid-Gym relies on resources from [legged_gym](https:/
 ## Any Questions?
 
 If you have further questions, please feel free to contact [support@robotera.com](mailto:support@robotera.com) or create an issue in this repository.
+
+
+## How to run
+export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json 
+export LD_LIBRARY_PATH=~/.conda/envs/humanoid-gym.venv/lib/:LD_LIBRARY_PATH

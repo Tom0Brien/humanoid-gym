@@ -31,7 +31,7 @@
 from humanoid.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 
 
-class XBotLCfg(LeggedRobotCfg):
+class NUgusCfg(LeggedRobotCfg):
     """
     Configuration class for the XBotL humanoid robot.
     """
@@ -39,12 +39,12 @@ class XBotLCfg(LeggedRobotCfg):
         # change the observation dim
         frame_stack = 15
         c_frame_stack = 3
-        num_single_obs = 47
+        num_single_obs = 71
         num_observations = int(frame_stack * num_single_obs)
-        single_num_privileged_obs = 73
+        single_num_privileged_obs = 105
         num_privileged_obs = int(c_frame_stack * single_num_privileged_obs)
-        num_actions = 12
-        num_envs = 4
+        num_actions = 20
+        num_envs = 1000
         episode_length_s = 24  # episode length in seconds
         use_ref_actions = False
 
@@ -55,14 +55,14 @@ class XBotLCfg(LeggedRobotCfg):
         torque_limit = 0.85
 
     class asset(LeggedRobotCfg.asset):
-        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/XBot/urdf/XBot-L.urdf'
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/nugus/urdf/robot.urdf'
 
-        name = "XBot-L"
-        foot_name = "ankle_roll"
-        knee_name = "knee"
+        name = "nugus"
+        foot_name = "foot"
+        knee_name = "lower"
 
-        terminate_after_contacts_on = ['base_link']
-        penalize_contacts_on = ["base_link"]
+        # terminate_after_contacts_on = ['torso']
+        # penalize_contacts_on = ["torso"]
         self_collisions = 0  # 1 to disable, 0 to enable...bitwise filter
         flip_visual_attachments = False
         replace_cylinder_with_capsule = False
@@ -98,29 +98,37 @@ class XBotLCfg(LeggedRobotCfg):
             height_measurements = 0.1
 
     class init_state(LeggedRobotCfg.init_state):
-        pos = [0.0, 0.0, 0.95]
-
-        default_joint_angles = {  # = target angles [rad] when action = 0.0
-            'left_leg_roll_joint': -0.,
-            'left_leg_yaw_joint': -0.,
-            'left_leg_pitch_joint': 0.,
-            'left_knee_joint': 0.,
-            'left_ankle_pitch_joint': 0.,
-            'left_ankle_roll_joint': 0.,
-            'right_leg_roll_joint': 0.,
-            'right_leg_yaw_joint': 0.,
-            'right_leg_pitch_joint': -0.,
-            'right_knee_joint': -0.,
-            'right_ankle_pitch_joint': -0.,
-            'right_ankle_roll_joint': 0.,
+        pos = [0.0, 0.0, 0.47]
+        
+        default_joint_angles = {
+            "left_hip_roll": 0.163499996,
+            "left_hip_yaw": 0.0344999991,
+            "left_hip_pitch": -0.904500008,
+            "left_knee_pitch": 1.20599997,
+            "left_ankle_pitch": -0.511500001,
+            "left_ankle_roll": -0.166500002,
+            "right_hip_roll": -0.162,
+            "right_hip_yaw": -0.0329999998,
+            "right_hip_pitch": -0.904500008,
+            "right_knee_pitch": 1.20599997,
+            "right_ankle_pitch": -0.50999999,
+            "right_ankle_roll": 0.167999998,
+            "left_shoulder_roll": 0.197999999,
+            "left_shoulder_pitch": 1.71599996,
+            "right_shoulder_roll": -0.197999999,
+            "right_shoulder_pitch": 1.71449995,
+            "neck_yaw": 0.0,
+            "head_pitch": 0.0,
+            "left_elbow_pitch": -0.715499997,
+            "right_elbow_pitch": -0.720000029,
         }
 
     class control(LeggedRobotCfg.control):
         # PD Drive parameters:
-        stiffness = {'leg_roll': 200.0, 'leg_pitch': 350.0, 'leg_yaw': 200.0,
-                     'knee': 350.0, 'ankle': 15}
-        damping = {'leg_roll': 10, 'leg_pitch': 10, 'leg_yaw':
-                   10, 'knee': 10, 'ankle': 10}
+        stiffness = {'hip_roll': 30, 'hip_pitch':30, 'hip_yaw': 30,
+                     'knee_pitch': 30, 'ankle_pitch': 30}
+        damping = {'hip_roll': 10, 'hip_pitch': 10, 'hip_yaw':
+                   10, 'knee_pitch': 10, 'ankle_pitch': 10}
 
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
@@ -225,7 +233,7 @@ class XBotLCfg(LeggedRobotCfg):
         clip_actions = 18.
 
 
-class XBotLCfgPPO(LeggedRobotCfgPPO):
+class NUgusCfgPPO(LeggedRobotCfgPPO):
     seed = 5
     runner_class_name = 'OnPolicyRunner'   # DWLOnPolicyRunner
 
@@ -250,7 +258,7 @@ class XBotLCfgPPO(LeggedRobotCfgPPO):
 
         # logging
         save_interval = 100  # check for potential saves every this many iterations
-        experiment_name = 'XBot_ppo'
+        experiment_name = 'nugus'
         run_name = ''
         # load and resume
         resume = False

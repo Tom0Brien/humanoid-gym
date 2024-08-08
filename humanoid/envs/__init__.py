@@ -36,7 +36,11 @@ from .base.legged_robot import LeggedRobot
 from .custom.humanoid_config import XBotLCfg, XBotLCfgPPO
 from .custom.humanoid_env import XBotLFreeEnv
 
+from .nugus.nugus_config import NUgusCfg, NUgusCfgPPO
+from .nugus.nugus_env import NUgusEnv
+
 from humanoid.utils.task_registry import task_registry
 
 
-task_registry.register( "humanoid_ppo", XBotLFreeEnv, XBotLCfg(), XBotLCfgPPO() )
+task_registry.register("humanoid_ppo", XBotLFreeEnv, XBotLCfg(), XBotLCfgPPO() )
+task_registry.register("nugus_ppo", NUgusEnv, NUgusCfg(), NUgusCfgPPO() )
